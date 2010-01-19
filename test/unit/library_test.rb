@@ -83,4 +83,20 @@ class EmailAddressTest < Test::Unit::TestCase
     assert_equal '', email.domain.name, 'Should have a domain object with no name.'
   end
 
+  # The comma is used in address header fields to separate email addresses from each other.
+  # Example: tarzan@jungle.org, jane@jungle.org. RFC2822 allowes their use if they are inside
+  # double quotes, but this would be very confusing. They are used in source routing, too.
+  # Don't use them in the *local* part.
+  # see http://www.remote.org/jochen/mail/info/chars.html for details
+
+  def test_local_part_of_email_address
+    email = ValidatesEmailVeracityOf::EmailAddress.new(invalid_local_part_address)
+    assert_equal 'carsten,comma', email.local_part, 'Should get the local part of the email'
+  end
+
+  def test_malformed_local_part
+    email = ValidatesEmailVeracityOf::EmailAddress.new(invalid_local_part_address)
+    assert_equal false, email.local_part_is_valid?, 'Should fail local part validation.'
+  end
+
 end

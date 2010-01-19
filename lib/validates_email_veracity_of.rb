@@ -139,6 +139,13 @@ class ValidatesEmailVeracityOf #:nodoc:
       @address = args.first || ''
     end
 
+    # Returns the local part of a mail address.
+    # ==== Example
+    # <tt>EmailAddress.new('heycarsten@gmail.com').local_part # => "heycarsten"</tt>
+    def local_part
+      address.split('@').first || ''
+    end
+
     # Returns the domain portion of the email address.
     # ==== Example
     # <tt>EmailAddress.new('heycarsten@gmail.com').domain # => "gmail.com"</tt>
@@ -151,6 +158,11 @@ class ValidatesEmailVeracityOf #:nodoc:
     def pattern_is_valid?
       address =~ /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i
     end
+
+    def local_part_is_valid?
+      !local_part.include?(',')
+    end
+        
   end
 
 end

@@ -76,5 +76,9 @@ class Test::Unit::TestCase #:nodoc:
       pete@unspace.ca
       heycarsten@gmail.com ]
     end
+
+    def invalid_local_part_address
+      'carsten,comma@invalid.com'
+    end
   
 end

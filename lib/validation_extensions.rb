@@ -55,6 +55,8 @@ module ActiveRecord #:nodoc:
         validates_each(attr_names, configuration) do |record, attr_name, value|
           next if value.blank?
           email = ValidatesEmailVeracityOf::EmailAddress.new(value, configuration)
+
+          message = :message unless email.local_part_is_valid?
           message = :message unless email.pattern_is_valid?
           message = :invalid_domain_message unless email.domain.valid?
           if configuration[:domain_check] && !message
